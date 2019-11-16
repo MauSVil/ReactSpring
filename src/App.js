@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useTransition, animated, config } from "react-spring";
 
 function App() {
+  const [show, set] = useState(0);
+  const transitions = useTransition(show, null, {
+    from: { position: "absolute", opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: config.molasses
+  });
+
+  const contet = [
+    { id: 1, content: "Hola" },
+    { id: 2, content: "Adios" },
+    { id: 3, content: "Bye" }
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div onClick={() => set(0)}>1</div>
+      <div onClick={() => set(1)}>2</div>
+      <div onClick={() => set(2)}>3</div>
+      {transitions.map(({ item, key, props }) => {
+        return (
+          <animated.div key={contet[item].id} style={props}>
+            {contet[item].content}
+          </animated.div>
+        );
+      })}
     </div>
   );
 }
